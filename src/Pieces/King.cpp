@@ -1,8 +1,8 @@
 #include <algorithm>
 
-#include "Pieces.h"
-#include "../Board/board.h"
-#include "../Board/board_utils.h"
+#include "pieces.h"
+#include "board.h"
+#include "board_utils.h"
 
 using namespace BoardUtils;
 using namespace std;

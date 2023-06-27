@@ -6,51 +6,18 @@
 #include <vector>
 
 #include "./board_utils.h"
-#include "../../Ansi-Text-Manipulation-Library/AnsiTextLibrary/src/ansi_lib.hpp"
-#include "../Notation/notation.h"
+#include "notation.h"
 
 using namespace std;
 using namespace BoardUtils;
-using namespace AnsiTextLib;
 
-const string Board::ONELINE = "oneline";
-const string Board::SEPERATE = "seperate";
-const string Board::GUI = "gui";
-const string Board::CLI = "cli";
-const string Board::WIKI = "wiki";
-const string Board::STAUNTY = "staunty";
-const string Board::MERIDA = "merida";
-
-string Board::getTheme(){
-    return this->theme;
-}
 
 vector<string> Board::getPGNMoves(){
     return this->pgn_moves;
 }
 
-string Board::getPlayingAs(){
-    return this->playingAs;
-}
-
-int Board::getSize(){
-    return this->window_size;
-}
-
-void Board::setTheme(string theme){
-    this->theme = theme;
-} 
-
 void Board::setPGN(string pgn){
     this->pgn = pgn;
-} 
-
-void Board::setSize(int size){
-    this->window_size = size;
-}
-
-string Board::getPromptType(){
-    return this->prompt_type;
 }
 
 string Board::getOutcome(){
@@ -65,77 +32,30 @@ Pieces* Board::getPieces(string color){
 }
 
 void Board::printBoard() {
-    Text::clearScreen();
-    if (playingAs == "white") {
-        cout << "   ABCDEFGH" << endl << endl;
-        for (int i = 7; i >= 0; i--) {
-            cout << i + 1 << "  ";
-            for (int j = 0; j < sizeof(board[i]); j++) {
-                cout << board[i][j];
-            }
-            cout << "  " << i + 1 << endl;
+    cout << "   ABCDEFGH" << endl << endl;
+    for (int i = 7; i >= 0; i--) {
+        cout << i + 1 << "  ";
+        for (int j = 0; j < sizeof(board[i]); j++) {
+            cout << board[i][j];
         }
-        cout << endl << "   ABCDEFGH" << endl << endl;
-    } else if (playingAs == "black") {
-        cout << "   HGFEDCBA" << endl << endl;
-        for (int i = 0; i <= 7; i++) {
-            cout << i + 1 << "  ";
-            for (int j = 0; j < sizeof(board[i]); j++) {
-                cout << board[i][j];
-            }
-            cout << "  " << i + 1 << endl;
-        }
-        cout << endl << "   HGFEDCBA" << endl << endl;
-    } else {
-        cout << "Incorrect argument" << endl;
+        cout << "  " << i + 1 << endl;
     }
-
-    cout << endl;
-
-    if(showMaterial)
-        cout << "Material Advantage: " << this->getPieces(Piece::WHITE)->calculateMaterial() - this->getPieces(Piece::BLACK)->calculateMaterial() << endl << endl;
-
+    cout << endl << "   ABCDEFGH" << endl << endl;
 }
 
 
 void Board::printBigBoard() {
-    Text::clearScreen();
-    if (playingAs == "white") {
-        cout << "     A   B   C   D   E   F   G   H " << endl;
-        cout << "   +---+---+---+---+---+---+---+---+" << endl;
-        for (int i = 7; i >= 0; i--) {
-            cout << i + 1 << "  ";
-            for (int j = 0; j < sizeof(board[i]); j++) {
-                cout << "| " << board[i][j] << " ";
-            }
-            cout << "|  " << i + 1 << endl;
-            cout << "   +---+---+---+---+---+---+---+---+" << endl;
+    cout << "     A   B   C   D   E   F   G   H " << endl;
+    cout << "   +---+---+---+---+---+---+---+---+" << endl;
+    for (int i = 7; i >= 0; i--) {
+        cout << i + 1 << "  ";
+        for (int j = 0; j < sizeof(board[i]); j++) {
+            cout << "| " << board[i][j] << " ";
         }
-        cout << "     A   B   C   D   E   F   G   H " << endl;
-    } else if (playingAs == "black") {
-        cout << "     H   G   F   E   D   C   B   A " << endl;
+        cout << "|  " << i + 1 << endl;
         cout << "   +---+---+---+---+---+---+---+---+" << endl;
-        for (int i = 0; i <= 7; i++) {
-            cout << i + 1 << "  ";
-            for (int j = sizeof(board[i])-1; j >= 0 ; j--) {
-                cout << "| " << board[i][j] << " ";
-            }
-            cout << "|  " << i + 1 << endl;
-            cout << "   +---+---+---+---+---+---+---+---+" << endl;
-        }
-        cout << "     H   G   F   E   D   C   B   A " << endl;
-
-    } else {
-        cout << "Incorrect argument" << endl;
     }
-
-    cout << endl;
-
-    if(showMoves)
-        cout << Notation::exportPGN(this) << endl;
-
-    if(showMaterial)
-        cout << "Material Advantage: " << this->getPieces(Piece::WHITE)->calculateMaterial() - this->getPieces(Piece::BLACK)->calculateMaterial() << endl << endl;
+    cout << "     A   B   C   D   E   F   G   H " << endl << endl;
 }
 
 void Board::scanBoard(vector<Piece *> whitePieces, vector<Piece *> blackPieces) {

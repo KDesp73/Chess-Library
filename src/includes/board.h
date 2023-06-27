@@ -3,8 +3,8 @@
 #include <cstring>
 #include <string>
 #include <unordered_map>
-#include "../Pieces/Pieces.h"
-// #include "../Notation/notation.h"
+#include "pieces.h"
+// #include "notation.h"
 
 using namespace std;
 
@@ -41,12 +41,6 @@ class Board{
         void increaceMovesSinceCapture();
         void setMove1Before(Move move);
         Move getMove1Before();
-        string getTheme();
-        int getSize();
-        void setTheme(string theme);
-        void setSize(int size);
-        string getPromptType();
-        string getPlayingAs();
         void setPGN(string pgn);
         vector<string> getPGNMoves();
 
@@ -55,6 +49,7 @@ class Board{
         void importPGN(string pgn);
         string exportFEN();
         string exportFEN(char board[][8]);
+        string exportPGN();
         
         void printBoard();
         void printBigBoard();
@@ -87,14 +82,7 @@ class Board{
 
         ~Board(){}
         Board(){};
-        Board(string fen, string playingAs = Piece::WHITE, bool showMaterial = true, bool showMoves = true, string prompt_type = Board::SEPERATE, int window_size = 60, string theme = Board::WIKI){
-            this->playingAs = playingAs;
-            this->showMaterial = showMaterial;
-            this->showMoves = showMoves;
-            this->prompt_type = prompt_type;
-            this->window_size = window_size;
-            this->theme = theme;
-
+        Board(string fen){
             importFEN(fen);
             wp->loadPieces(board);
             bp->loadPieces(board);
@@ -105,8 +93,7 @@ class Board{
             past_board_states.insert({fen, 1});
         }
 
-        Board(char board[8][8], string playingAs = Piece::WHITE, bool showMaterial = true, bool showMoves = true, string prompt_type = Board::SEPERATE, int window_size = 60, string theme = Board::WIKI)
-        : Board(exportFEN(board), playingAs, showMaterial, showMoves, prompt_type, window_size, theme){}
+        Board(char board[8][8]) : Board(exportFEN(board)){}
 
 
     private:
@@ -119,19 +106,4 @@ class Board{
         string castling_rights;
         string pgn = "";
         vector<string> pgn_moves;
-        string playingAs;
-        bool showMaterial;
-        bool showMoves;
-        string prompt_type;
-        int window_size;
-        string theme;
-
-    public:
-        static const string ONELINE;
-        static const string SEPERATE;
-        static const string GUI;
-        static const string CLI;
-        static const string WIKI;
-        static const string MERIDA;
-        static const string STAUNTY;
 };

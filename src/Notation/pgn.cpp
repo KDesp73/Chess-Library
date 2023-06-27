@@ -1,7 +1,7 @@
 #include "notation.h"
 
-#include "../Board/board.h"
-#include "../Board/board_utils.h"
+#include "board.h"
+#include "board_utils.h"
 
 #include <regex>
 #include <vector>
@@ -99,9 +99,9 @@ string Notation::moveToPGNMove(Move move, Board *board){
     return algebraicNotation;
 }
 
-string Notation::exportPGN(Board *board){
+string Board::exportPGN(){
     string pgn;
-    vector<string> pgn_moves = board->getPGNMoves();
+    vector<string> pgn_moves = this->getPGNMoves();
 
     if(pgn_moves.size() == 1) 
         pgn +=  to_string(1) + ". " + pgn_moves[0] + " ";
@@ -112,9 +112,9 @@ string Notation::exportPGN(Board *board){
     }
     
     
-    pgn += board->getOutcome();
+    pgn += this->getOutcome();
 
-    board->setPGN(pgn);
+    this->setPGN(pgn);
 
     return pgn;
 }

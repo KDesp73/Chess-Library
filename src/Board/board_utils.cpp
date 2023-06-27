@@ -1,5 +1,5 @@
 #include "board_utils.h"
-#include "../Pieces/Pieces.h"
+#include "pieces.h"
 #include "structs.h"
 
 #include <bits/stdc++.h>

@@ -1,7 +1,7 @@
 #include <cstdlib>
 
-#include "Pieces.h"
-#include "../Board/board_utils.h"
+#include "pieces.h"
+#include "board_utils.h"
 
 using namespace BoardUtils;
 

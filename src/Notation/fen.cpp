@@ -5,8 +5,8 @@
 #include<ctype.h>
 
 #include "notation.h"
-#include "../Board/board.h"
-#include "../Board/board_utils.h"
+#include "board.h"
+#include "board_utils.h"
 
 using namespace std;
 

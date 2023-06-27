@@ -2,12 +2,36 @@
 
 #include <iostream>
 #include <vector>
-#include "../Board/structs.h"
-#include "../GUI/Rendering/rendering.h"
+#include "structs.h"
 
 using namespace std;
 
 class Piece {
+	public:
+		virtual void printPiece();
+		virtual string toString();
+		virtual bool isValidMove(string to, char board[][8]){return false;}
+		virtual vector<string> getPseudoValidMoves(char board[][8]){vector<string> ret; return ret;}
+		bool capturesOwnPiece(Coords toCoords, char board[][8]);
+		
+		string currentSquare;
+		string color;
+		char boardChar;
+		int value;
+		string type;
+		bool hasMoved = false;
+		
+		virtual ~Piece(){}
+		Piece(){}	
+		Piece(string currentSquare, string color){
+			if(color != WHITE && color != BLACK){
+				cout << "Incorrect color" << endl;
+			}
+			
+			this->currentSquare = currentSquare;
+			this->color = color;
+		}
+
 	public:
 		static const string WHITE;
 		static const string BLACK;
@@ -18,34 +42,6 @@ class Piece {
 		static const string BISHOP;
 		static const string KNIGHT;
 		static const string PAWN;
-
-		Image image;
-		string currentSquare;
-		string color;
-		char boardChar;
-		int value;
-		string type;
-		bool hasMoved = false;
-		
-		virtual ~Piece(){
-		}
-		
-		Piece(){
-		}	
-		
-		Piece(string currentSquare, string color){
-			if(color != WHITE && color != BLACK){
-				cout << "Incorrect color" << endl;
-			}
-			
-			this->currentSquare = currentSquare;
-			this->color = color;
-		}
-		virtual void printPiece();
-		virtual string toString();
-		virtual bool isValidMove(string to, char board[][8]){return false;}
-		virtual vector<string> getPseudoValidMoves(char board[][8]){vector<string> ret; return ret;}
-		bool capturesOwnPiece(Coords toCoords, char board[][8]);
 };
 
 class Pawn: public Piece {
