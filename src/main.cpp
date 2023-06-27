@@ -10,9 +10,12 @@ int main(){
     Board board{starting_fen};
 
     board.printBigBoard();
-
     Movement::movePiece(Move{"e2", "e4"}, &board);
-
     board.printBigBoard();
+
+    for(string move : Movement::getValidMoves("b1", &board)){
+        cout << move << endl;
+    }
+
     return 0;
 }

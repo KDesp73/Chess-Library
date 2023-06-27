@@ -22,36 +22,6 @@ class Board{
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
             {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}
         };
-        
-        bool isInCheckmate(King *king);
-		bool isInStalemate(King *king);
-        bool isProtected(Piece *piece);
-        bool isProtected(string square, string color);
-        bool isPinned(string to, Piece *piece);
-        bool kingTouchesKing(string to, string color);
-
-        bool canMove(Move move, Board *board);
-        bool canAttack(Move move, Board *board);
-        bool canMove(string color, string square, Board *board);
-        bool canAttack(string color, string square, Board *board);
-        bool canKingCapturePiece(King *king, Move move, Board *board);
-        bool isValidSquare(string square);
-        int kingWantsToCastle(Move move);
-        
-        vector<string> getValidMoves(Piece *piece, Board *board);
-        bool movePiece(Move move, Board *board);
-        void moveFreely(Move move, Board *board);
-        bool removePiece(string square, Board *board);
-        bool removePieceFreely(string square, Board *board);
-
-        
-        bool promotePawn(Move move, Pawn *pawn, Board *board);
-        string promoteTo();
-        bool enpassantPawn(string square, Pawn *pawn, Board *board);
-        bool castleKing(string square, King *king, Board *board);
-
-        
-
 
         bool isThreeFoldRepetition();
         bool isDrawDueToInsufficientMaterial();
@@ -79,10 +49,10 @@ class Board{
         void printBigBoard();
         void scanBoard(vector<Piece*> whitePieces, vector<Piece*> blackPieces);
 
-        Piece *findPiece(string type, string color);
+        Piece* findPiece(string type, string color);
         int findPiece(Piece *piece);
         Piece* findPiece(Coords coords);
-        Piece*findPiece(string square);
+        Piece* findPiece(string square);
         
         void pushBoardState(string fen);
         void pushMove(string move);
@@ -91,8 +61,6 @@ class Board{
         static void copyBoard(char src[8][8], char dest[8][8]);
         static void copyMove(Move *src, Move *dest);
         
-        
-
 
         ~Board(){}
         Board(){};

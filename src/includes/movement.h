@@ -16,17 +16,19 @@ namespace Movement{
     bool canMove(string color, string square, Board *board);
     bool canAttack(string color, string square, Board *board);
     bool canKingCapturePiece(King *king, Move move, Board *board);
-    int kingWantsToCastle(Move move);
 
     vector<string> getValidMoves(Piece *piece, Board *board);
+    vector<string> getValidMoves(string square, Board *board);
+    
     bool movePiece(Move move, Board *board);
     void moveFreely(Move move, Board *board);
     bool removePiece(string square, Board *board);
     bool removePieceFreely(string square, Board *board);
 
 
-    bool promotePawn(Move move, Pawn *pawn, Board *board);
     string promoteTo();
+    bool promotePawn(Move move, Pawn *pawn, Board *board);
     bool enpassantPawn(string square, Pawn *pawn, Board *board);
     bool castleKing(string square, King *king, Board *board);
+    int kingWantsToCastle(Move move);
 };

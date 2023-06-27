@@ -247,6 +247,15 @@ bool Movement::isPinned(string to, Piece *piece, Board *board){
     return (piecesThatCheckTheKingBefore.size() < piecesThatCheckTheKing.size());
 }
 
+vector<string> Movement::getValidMoves(string square, Board *board){
+    Piece *piece = board->findPiece(square);
+
+    if(piece == NULL) return {};
+
+    return getValidMoves(piece, board);
+}
+
+
 vector<string> Movement::getValidMoves(Piece *piece, Board *board){
     Pawn *pawn = dynamic_cast<Pawn *>(piece);
     Rook *rook = dynamic_cast<Rook *>(piece);
