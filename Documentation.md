@@ -1,5 +1,25 @@
 # Documentation
 
+## Table of Contents
+
+- [Board](##Board)
+- [Movement](##Movement)
+- [Piece](##Piece)
+    - [Pawn](##Pawn)
+    - [Rook](##Rook)
+    - [Knight](##Knight)
+    - [Bishop](##Bishop)
+    - [Queen](##Queen)
+    - [King](##King)
+- [Pieces](##Pieces)
+    - [WhitePieces](##WhitePieces)
+    - [BlackPieces](##Blackieces)
+- [Notation](##Notation)
+- [Move](##Move)
+- [Coords](##Coords)
+- [BoardUtils](##BoardUtils)
+    
+
 ## Board
 
 The `Board` class represents a chess board and provides methods for manipulating and analyzing the board state.
@@ -257,7 +277,7 @@ The `Notation` namespace provides functions for handling chess notations.
 
 ---
 
-## Move struct
+## Move
 
 The `Move` struct represents a chess move.
 
@@ -269,7 +289,7 @@ The `Move` struct represents a chess move.
 
 ---
 
-## Coords struct
+## Coords
 
 The `Coords` struct represents the coordinates of a point in a 2-dimensional space.
 
