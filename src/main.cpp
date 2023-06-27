@@ -5,7 +5,6 @@
 #include "chess_lib.h"
 #include "../tests/tests.h"
 #include "../tests/test_fens.h"
-#include "../Ansi-Text-Manipulation-Library/AnsiTextLibrary/src/ansi_lib.hpp"
 
 #define TESTS false
 
