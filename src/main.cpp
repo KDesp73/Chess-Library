@@ -11,6 +11,7 @@ int main(){
 
     board.printBigBoard();
     Movement::movePiece(Move{"e2", "e4"}, &board);
+    board.swapMoveFor();
     board.printBigBoard();
 
     for(string move : Movement::getValidMoves("b1", &board)){

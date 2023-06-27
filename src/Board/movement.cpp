@@ -45,7 +45,7 @@ bool Movement::movePiece(Move move, Board *board) {
             string algebraic_notation =
                 Notation::moveToPGNMove(move, new Board(current_fen));
             board->getPGNMoves().push_back(algebraic_notation);
-
+        
             return Movement::promotePawn(move, pawn, board);
         }
         return false;

@@ -12,6 +12,9 @@
 using namespace std;
 using namespace BoardUtils;
 
+void Board::swapMoveFor(){
+    (moveFor == Piece::WHITE) ? moveFor = Piece::BLACK : moveFor = Piece::WHITE;
+}
 
 vector<string> Board::getPGNMoves(){
     return this->pgn_moves;
@@ -257,6 +260,8 @@ vector<string> Movement::getValidMoves(string square, Board *board){
 
 
 vector<string> Movement::getValidMoves(Piece *piece, Board *board){
+    if(piece->color != board->moveFor) return {};
+    
     Pawn *pawn = dynamic_cast<Pawn *>(piece);
     Rook *rook = dynamic_cast<Rook *>(piece);
     Knight *knight = dynamic_cast<Knight *>(piece);

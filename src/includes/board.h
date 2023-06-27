@@ -37,6 +37,7 @@ class Board{
         Move getMove1Before();
         void setPGN(string pgn);
         vector<string> getPGNMoves();
+        void swapMoveFor();
 
 
         void importFEN(string fen);
