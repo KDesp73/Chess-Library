@@ -63,6 +63,7 @@ The `Board` class represents a chess board and provides methods for manipulating
 - `quantityOfPiece(type, color)`: Returns the quantity of pieces with the specified type and color.
 - `copyBoard(src, dest)`: Copies the contents of the source board to the destination board.
 - `copyMove(src, dest)`: Copies the contents of the source move to the destination move.
+- `swapMoveFor`: Swaps the color of the player who is about to make a move
 
 ### Constructors
 
