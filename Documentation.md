@@ -1,26 +1,28 @@
 # Documentation
+<a name="top"></a>
 
 ## Table of Contents
 
-- [Board](##Board)
-- [Movement](##Movement)
-- [Piece](##Piece)
-    - [Pawn](##Pawn)
-    - [Rook](##Rook)
-    - [Knight](##Knight)
-    - [Bishop](##Bishop)
-    - [Queen](##Queen)
-    - [King](##King)
-- [Pieces](##Pieces)
-    - [WhitePieces](##WhitePieces)
-    - [BlackPieces](##Blackieces)
-- [Notation](##Notation)
-- [Move](##Move)
-- [Coords](##Coords)
-- [BoardUtils](##BoardUtils)
+- [Board](#board)
+- [Movement](#movement)
+- [Piece](#piece)
+    - [Pawn](#pawn)
+    - [Rook](#rook)
+    - [Knight](#knight)
+    - [Bishop](#bishop)
+    - [Queen](#queen)
+    - [King](#king)
+- [Pieces](#pieces)
+    - [WhitePieces](#whitepieces)
+    - [BlackPieces](#blackpieces)
+- [Notation](#notation)
+- [Move](#move)
+- [Coords](#coords)
+- [BoardUtils](#boardutils)
     
 
 ## Board
+<a name="board"></a>
 
 The `Board` class represents a chess board and provides methods for manipulating and analyzing the board state.
 
@@ -75,6 +77,7 @@ The `Board` class represents a chess board and provides methods for manipulating
 ---
 
 ## Movement
+<a name="movement"></a>
 
 The `Movement` namespace provides functions related to movement and rules in chess.
 
@@ -106,6 +109,7 @@ The `Movement` namespace provides functions related to movement and rules in che
 ---
 
 ## Piece
+<a name="piece"></a>
 
 The `Piece` class represents a chess piece.
 
@@ -137,6 +141,7 @@ The `Piece` class represents a chess piece.
 ---
 
 ## Pawn
+<a name="pawn"></a>
 
 The `Pawn` class represents a pawn piece, which is a derived class of `Piece`.
 
@@ -152,6 +157,7 @@ The `Pawn` class represents a pawn piece, which is a derived class of `Piece`.
 ---
 
 ## Rook
+<a name="rook"></a>
 
 The `Rook` class represents a rook piece, which is a derived class of `Piece`.
 
@@ -163,6 +169,7 @@ The `Rook` class represents a rook piece, which is a derived class of `Piece`.
 ---
 
 ## Knight
+<a name="knight"></a>
 
 The `Knight` class represents a knight piece, which is a derived class of `Piece`.
 
@@ -174,6 +181,7 @@ The `Knight` class represents a knight piece, which is a derived class of `Piece
 ---
 
 ## Bishop
+<a name="bishop"></a>
 
 The `Bishop` class represents a bishop piece, which is a derived class of `Piece`.
 
@@ -185,6 +193,7 @@ The `Bishop` class represents a bishop piece, which is a derived class of `Piece
 ---
 
 ## Queen
+<a name="queen"></a>
 
 The `Queen` class represents a queen piece, which is a derived class of `Piece`.
 
@@ -196,6 +205,7 @@ The `Queen` class represents a queen piece, which is a derived class of `Piece`.
 ---
 
 ## King
+<a name="king"></a>
 
 The `King` class represents a king piece, which is a derived class of `Piece`.
 
@@ -212,6 +222,7 @@ The `King` class represents a king piece, which is a derived class of `Piece`.
 ---
 
 ## Pieces
+<a name="pieces"></a>
 
 The `Pieces` class represents a collection of chess pieces.
 
@@ -233,6 +244,7 @@ The `Pieces` class represents a collection of chess pieces.
 ---
 
 ## WhitePieces
+<a name="whitepieces"></a>
 
 The `WhitePieces` class represents a collection of white pieces, which is a derived class of `Pieces`.
 
@@ -247,6 +259,7 @@ The `WhitePieces` class represents a collection of white pieces, which is a deri
 ---
 
 ## BlackPieces
+<a name="blackpieces"></a>
 
 The `BlackPieces` class represents a collection of black pieces, which is a derived class of `Pieces`.
 
@@ -261,6 +274,7 @@ The `BlackPieces` class represents a collection of black pieces, which is a deri
 ---
 
 ## Notation
+<a name="notation"></a>
 
 The `Notation` namespace provides functions for handling chess notations.
 
@@ -278,6 +292,7 @@ The `Notation` namespace provides functions for handling chess notations.
 ---
 
 ## Move
+<a name="move"></a>
 
 The `Move` struct represents a chess move.
 
@@ -290,6 +305,7 @@ The `Move` struct represents a chess move.
 ---
 
 ## Coords
+<a name="coords"></a>
 
 The `Coords` struct represents the coordinates of a point in a 2-dimensional space.
 
@@ -301,6 +317,7 @@ The `Coords` struct represents the coordinates of a point in a 2-dimensional spa
 ---
 
 ## BoardUtils
+<a name="boardutils"></a>
 
 > The following methods are helpers and they are probably not necessary to the programmer when using the library
 
@@ -329,3 +346,6 @@ The `BoardUtils` namespace provides utility functions for working with chess boa
 - `isValidSquare(string square)`: Checks if a given string represents a valid chess square.
 - `characterQuantity(char c, string str)`: Counts the quantity of a specific character in a string.
 
+---
+
+[Go Back](#top)
