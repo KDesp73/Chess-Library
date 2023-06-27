@@ -3,6 +3,7 @@
 #include "pieces.h"
 #include "board.h"
 #include "board_utils.h"
+#include "movement.h"
 
 using namespace BoardUtils;
 using namespace std;
@@ -86,7 +87,7 @@ vector<Piece*> King::isInCheck(char board[][8]) {
 
 vector<Piece*> King::isInCheck(string to, char board[][8]) {
     Board* b = new Board(board);
-    Board::removePieceFreely(this->currentSquare, b);
+    Movement::removePieceFreely(this->currentSquare, b);
 
     vector<Piece*> ret;
 

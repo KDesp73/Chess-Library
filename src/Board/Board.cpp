@@ -7,6 +7,7 @@
 
 #include "./board_utils.h"
 #include "notation.h"
+#include "movement.h"
 
 using namespace std;
 using namespace BoardUtils;
@@ -74,7 +75,7 @@ void Board::scanBoard(vector<Piece *> whitePieces, vector<Piece *> blackPieces) 
     }
 }
 
-bool Board::removePiece(string square, Board *board){
+bool Movement::removePiece(string square, Board *board){
     int removeIndex;
     Piece *pieceToRemove = NULL;
     Pieces *whitePieces = board->getPieces(Piece::WHITE);
@@ -112,7 +113,7 @@ bool Board::removePiece(string square, Board *board){
     return false;
 }
 
-bool Board::removePieceFreely(string square, Board *board){
+bool Movement::removePieceFreely(string square, Board *board){
     int removeIndex;
     Piece *pieceToRemove = NULL;
     Pieces *whitePieces = board->getPieces(Piece::WHITE);
@@ -186,23 +187,23 @@ Piece* Board::findPiece(string square){
     return this->findPiece(translateSquare(square));
 }
 
-bool Board::isProtected(Piece *piece) {
-    return isProtected(piece->currentSquare, piece->color);
+bool Movement::isProtected(Piece *piece, Board *board) {
+    return Movement::isProtected(piece->currentSquare, piece->color, board);
 }
 
-bool Board::isProtected(string square, string color){
+bool Movement::isProtected(string square, string color, Board *board){
     if(!BoardUtils::isValidSquare(square)) return false;
 
     Coords coords = BoardUtils::translateSquare(square);
 
-    Board temp = {exportFEN()};
-    temp.moveFor = this->moveFor;
+    Board temp = {board->exportFEN()};
+    temp.moveFor = board->moveFor;
 
-    Board::removePieceFreely(square, &temp);
+    Movement::removePieceFreely(square, &temp);
     
     // Remove opponents pieces completely
     Piece *king = temp.findPiece(Piece::KING, (color == Piece::WHITE) ? Piece::BLACK : Piece::WHITE);
-    Pieces *pieces = (color == Piece::BLACK) ? temp.wp : temp.bp;
+    Pieces *pieces = (color == Piece::BLACK) ? temp.getPieces("white") : temp.getPieces("black");
     pieces->pieces.clear();
     pieces->pieces.push_back(king);
 
@@ -218,15 +219,15 @@ bool Board::isProtected(string square, string color){
     
     
 
-    if(BoardUtils::canAttack(color, square, &temp))
+    if(Movement::canAttack(color, square, &temp))
         return true;
 
     return false;
 }
 
-bool Board::isPinned(string to, Piece *piece){
-    Pieces *pieces = this->getPieces(piece->color);
-    King *king = dynamic_cast<King *>(this->findPiece(Piece::KING, piece->color));
+bool Movement::isPinned(string to, Piece *piece, Board *board){
+    Pieces *pieces = board->getPieces(piece->color);
+    King *king = dynamic_cast<King *>(board->findPiece(Piece::KING, piece->color));
 
     if(king == NULL) {
         cerr << "King not found" << endl;
@@ -234,11 +235,11 @@ bool Board::isPinned(string to, Piece *piece){
     }
     if(piece->type == Piece::KING) return false;
 
-    vector<Piece *> piecesThatCheckTheKingBefore = king->isInCheck(this->board);
+    vector<Piece *> piecesThatCheckTheKingBefore = king->isInCheck(board->board);
 
     // if removing the piece causes the king to be in check then it's pinned
     char temp_board[8][8];
-    std::memcpy(temp_board, this->board, 8 * 8 * sizeof(char));
+    std::memcpy(temp_board, board->board, 8 * 8 * sizeof(char));
     
     BoardUtils::makeMove(piece->currentSquare, to, temp_board);
 
@@ -246,7 +247,7 @@ bool Board::isPinned(string to, Piece *piece){
     return (piecesThatCheckTheKingBefore.size() < piecesThatCheckTheKing.size());
 }
 
-vector<string> Board::getValidMoves(Piece *piece, Board *board){
+vector<string> Movement::getValidMoves(Piece *piece, Board *board){
     Pawn *pawn = dynamic_cast<Pawn *>(piece);
     Rook *rook = dynamic_cast<Rook *>(piece);
     Knight *knight = dynamic_cast<Knight *>(piece);
@@ -275,7 +276,7 @@ vector<string> Board::getValidMoves(Piece *piece, Board *board){
 
         // Filter invalid moves
         for (int i = 0; i < movesToCheck.size(); i++) {
-            if (!BoardUtils::canMove(Move{pawn->currentSquare, movesToCheck.at(i), "-"}, board)) {
+            if (!Movement::canMove(Move{pawn->currentSquare, movesToCheck.at(i), "-"}, board)) {
                 movesToCheck.erase(movesToCheck.begin() + i);  // erase from vector
                 i--;
             }
@@ -311,7 +312,7 @@ vector<string> Board::getValidMoves(Piece *piece, Board *board){
 
         // Filter invalid moves
         for (int i = 0; i < movesToCheck.size(); i++) {
-            if(!BoardUtils::canMove(Move{knight->currentSquare, movesToCheck.at(i)}, board)){
+            if(!Movement::canMove(Move{knight->currentSquare, movesToCheck.at(i)}, board)){
                 movesToCheck.erase(movesToCheck.begin() + i);  // erase from vector
                 i--;
             }
@@ -364,7 +365,7 @@ vector<string> Board::getValidMoves(Piece *piece, Board *board){
 
         // Filter invalid moves
         for (int i = 0; i < movesToCheck.size(); i++) {
-            if(!BoardUtils::canMove(Move{bishop->currentSquare, movesToCheck.at(i)}, board)){
+            if(!Movement::canMove(Move{bishop->currentSquare, movesToCheck.at(i)}, board)){
                 movesToCheck.erase(movesToCheck.begin() + i);  // erase from vector
                 i--;
             }
@@ -412,7 +413,7 @@ vector<string> Board::getValidMoves(Piece *piece, Board *board){
 
         // Filter invalid moves
         for (int i = 0; i < movesToCheck.size(); i++) {
-            if(!BoardUtils::canMove(Move{rook->currentSquare, movesToCheck.at(i)}, board)){
+            if(!Movement::canMove(Move{rook->currentSquare, movesToCheck.at(i)}, board)){
                 movesToCheck.erase(movesToCheck.begin() + i);  // erase from vector
                 i--;
             }
@@ -495,7 +496,7 @@ vector<string> Board::getValidMoves(Piece *piece, Board *board){
 
         // Filter invalid moves
         for (int i = 0; i < movesToCheck.size(); i++) {
-            if(!BoardUtils::canMove(Move{queen->currentSquare, movesToCheck.at(i)}, board)){
+            if(!Movement::canMove(Move{queen->currentSquare, movesToCheck.at(i)}, board)){
                 movesToCheck.erase(movesToCheck.begin() + i);  // erase from vector
                 i--;
             }
@@ -536,7 +537,7 @@ vector<string> Board::getValidMoves(Piece *piece, Board *board){
 
         // Filter invalid moves
         for (int i = 0; i < movesToCheck.size(); i++) {
-            if (!BoardUtils::canMove(Move{king->currentSquare, movesToCheck.at(i)}, board)) {
+            if (!Movement::canMove(Move{king->currentSquare, movesToCheck.at(i)}, board)) {
                 movesToCheck.erase(movesToCheck.begin() + i);  // erase from vector
                 i--;
             }

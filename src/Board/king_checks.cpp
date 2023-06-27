@@ -1,32 +1,19 @@
 #include "board.h"
 #include "board_utils.h"
+#include "movement.h"
 
 using namespace BoardUtils;
 
-/**
- * @brief Algorithm
- * 1. If the King is not in check it's not mate
- * 2. If the King has valid moves it's not mate
- * 3. If the number of pieces that check the king is more than one it is mate
- * 4. It the number of pieces that check the king is only one and it can be captured it's not mate
- * 5. If the check can be blocked it's not mate
- * 
- * In any other case it is checkmate
- * 
- * @param king 
- * @return true
- * @return false 
- */
-bool Board::isInCheckmate(King *king) {
-    vector<Piece *> piecesThatCheckTheKing = king->isInCheck(this->board);
+bool Movement::isInCheckmate(King *king, Board *board) {
+    vector<Piece *> piecesThatCheckTheKing = king->isInCheck(board->board);
 
     if (piecesThatCheckTheKing.empty()) return false;
 
-    vector<string> kingsValidMoves = Board::getValidMoves(king, this);
+    vector<string> kingsValidMoves = Movement::getValidMoves(king, board);
     
     // Filter invalid moves once more checking protected pieces
     for (int i = 0; i < kingsValidMoves.size(); i++){
-        if(!BoardUtils::canMove(Move{king->currentSquare, kingsValidMoves.at(i)}, this)) {
+        if(!Movement::canMove(Move{king->currentSquare, kingsValidMoves.at(i)}, board)) {
             kingsValidMoves.erase(kingsValidMoves.begin() + i);  // erase from vector
             i--;
         }
@@ -35,7 +22,7 @@ bool Board::isInCheckmate(King *king) {
     if (!kingsValidMoves.empty()) return false;
     if (piecesThatCheckTheKing.size() > 1) return true;
     // Check if piece that checks the king can be captured
-    if(BoardUtils::canMove(king->color, piecesThatCheckTheKing.at(0)->currentSquare, this)) return false;
+    if(Movement::canMove(king->color, piecesThatCheckTheKing.at(0)->currentSquare, board)) return false;
 
     // Check if check can be blocked
     Pawn *pawn = dynamic_cast<Pawn *>(piecesThatCheckTheKing.at(0));
@@ -60,14 +47,14 @@ bool Board::isInCheckmate(King *king) {
             int direction = (rookCol < kingCol) ? 1 : -1;
             for (int i = 1; i <= abs(rookCol - kingCol); i++) {
                 string squareToCheck = letters[rookCol + i * direction] + to_string(rookRow + 1);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         } else if (rookCol == kingCol) {
             int direction = (rookRow < rookCol) ? 1 : -1;
             for (int i = 1; i <= abs(rookRow - kingRow); i++) {
                 string squareToCheck = letters[rookCol + 1] + to_string(rookRow + i * direction + 1);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         }
@@ -88,25 +75,25 @@ bool Board::isInCheckmate(King *king) {
         if(rowDiff > 0 && colDiff > 0){
             for (int i = 1; i <= abs(rowDiff); i++){
                 string squareToCheck = letters[bishopCoords.y - i] + to_string(bishopCoords.x + 1 - i);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         } else if(rowDiff < 0 && colDiff > 0){
             for (int i = 1; i <= abs(rowDiff); i++){
                 string squareToCheck = letters[bishopCoords.y - i] + to_string(bishopCoords.x + 1 + i);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         } else if(rowDiff > 0 && colDiff < 0){
             for (int i = 1; i <= abs(rowDiff); i++){
                 string squareToCheck = letters[bishopCoords.y + i] + to_string(bishopCoords.x + 1 - i);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         } else if(rowDiff < 0 && colDiff < 0){
             for (int i = 1; i <= abs(rowDiff); i++){
                 string squareToCheck = letters[bishopCoords.y + i] + to_string(bishopCoords.x + 1 + i);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         }
@@ -129,14 +116,14 @@ bool Board::isInCheckmate(King *king) {
             int direction = (colDiff < 0) ? 1 : -1;
             for (int i = 1; i < abs(queenCol - kingCol); i++) {
                 string squareToCheck = letters[queenCol + i*direction] + to_string(queenRow + 1);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         } else if (queenCol == kingCol) {
             int direction = (rowDiff < 0) ? 1 : -1;
             for (int i = 1; i < abs(queenRow - kingRow); i++) {
                 string squareToCheck = letters[queenCol - 1] + to_string(queenRow - 1 + i*direction);
-                if (BoardUtils::canMove(king->color, squareToCheck, this))
+                if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
         } else {
@@ -145,25 +132,25 @@ bool Board::isInCheckmate(King *king) {
             if(rowDiff > 0 && colDiff > 0){
                 for (int i = 1; i <= abs(rowDiff); i++){
                     string squareToCheck = letters[queenCoords.y - i] + to_string(queenCoords.x + 1 - i);
-                    if (BoardUtils::canMove(king->color, squareToCheck, this))
+                    if (Movement::canMove(king->color, squareToCheck, board))
                         return false;
                 }
             } else if(rowDiff < 0 && colDiff > 0){
                 for (int i = 1; i <= abs(rowDiff); i++){
                     string squareToCheck = letters[queenCoords.y - i] + to_string(queenCoords.x + 1 + i);
-                    if (BoardUtils::canMove(king->color, squareToCheck, this))
+                    if (Movement::canMove(king->color, squareToCheck, board))
                         return false;
                 }
             } else if(rowDiff > 0 && colDiff < 0){
                 for (int i = 1; i <= abs(rowDiff); i++){
                     string squareToCheck = letters[queenCoords.y + i] + to_string(queenCoords.x + 1 - i);
-                    if (BoardUtils::canMove(king->color, squareToCheck, this))
+                    if (Movement::canMove(king->color, squareToCheck, board))
                         return false;
                 }
             } else if(rowDiff < 0 && colDiff < 0){
                 for (int i = 1; i <= abs(rowDiff); i++){
                     string squareToCheck = letters[queenCoords.y + i] + to_string(queenCoords.x + 1 + i);
-                    if (BoardUtils::canMove(king->color, squareToCheck, this))
+                    if (Movement::canMove(king->color, squareToCheck, board))
                         return false;
                 }
             }
@@ -173,40 +160,28 @@ bool Board::isInCheckmate(King *king) {
     return true;
 }
 
-/**
- * @brief Algorithm
- * 1. If the King is in check it's not stalemate
- * 2. If the King has valid moves it's not stalemate
- * 3. If the king's pieces have a valid move it's not stalemate
- * 
- * In any other case it is checkmate
- * 
- * @param king 
- * @return true
- * @return false 
- */
-bool Board::isInStalemate(King *king) {
-    if(king->color != moveFor) return false;
+bool Movement::isInStalemate(King *king, Board *board) {
+    if(king->color != board->moveFor) return false;
     
-    vector<Piece *> piecesThatCheckTheKing = king->isInCheck(this->board);
+    vector<Piece *> piecesThatCheckTheKing = king->isInCheck(board->board);
 
     if(!piecesThatCheckTheKing.empty()) return false;
 
-    if(!Board::getValidMoves(king, this).empty()) return false;
+    if(!Movement::getValidMoves(king, board).empty()) return false;
 
-    Pieces *pieces = this->getPieces(king->color);
+    Pieces *pieces = board->getPieces(king->color);
 
     for (int i = 0; i < pieces->pieces.size(); i++){
         if(pieces->pieces.at(i)->type == Piece::KING) continue;
 
-        if(!Board::getValidMoves(pieces->pieces.at(i), this).empty()) return false;
+        if(!Movement::getValidMoves(pieces->pieces.at(i), board).empty()) return false;
     }
 
     return true;
 };
 
-bool Board::kingTouchesKing(string to, string color){
-    King *opponent_king = dynamic_cast<King *>(this->findPiece(Piece::KING, (color == Piece::WHITE) ? Piece::BLACK : Piece::WHITE));
+bool Movement::kingTouchesKing(string to, string color, Board *board){
+    King *opponent_king = dynamic_cast<King *>(board->findPiece(Piece::KING, (color == Piece::WHITE) ? Piece::BLACK : Piece::WHITE));
 
     if(opponent_king == NULL) {
         //cerr << "Opponent king not found" << endl;
@@ -224,3 +199,4 @@ bool Board::kingTouchesKing(string to, string color){
 
     return (abs(rowDiff) <= 1 && abs(colDiff) <= 1);
 }
+

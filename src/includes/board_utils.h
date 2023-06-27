@@ -10,20 +10,9 @@ using namespace std;
 #include "board.h"
 
 namespace BoardUtils{
-    bool canMove(Move move, Board *board);
-    bool canAttack(Move move, Board *board);
-    bool canMove(string color, string square, Board *board);
-    bool canAttack(string color, string square, Board *board);
     bool contains(vector<string> moves, string move);
-    bool canKingCapturePiece(King *king, Move move, Board *board);
-    bool canRookBeBlocked(Rook *rook, King *king, Board *board);
-    bool canBishopBeBlocked(Bishop *bishop, King *king, Board *board);
-    bool canQueenBeBlocked(Queen *queen, King *king, Board *board);
-    bool canPieceBeBlocked(Piece *piece, King *king, Board *board);
     bool makeMove(string from, string to, char board[][8]); // The primitive one
-    bool isValidSquare(string square);
 
-    int kingWantsToCastle(Move move);
     int calcDirection(King *king, string square);
     
     void printCoords(Coords coords);
@@ -49,6 +38,8 @@ namespace BoardUtils{
     std::vector<std::string> splitString(const std::string& input, char delimiter);
 
     int findMove(Move move, vector<Move> moves);
+
+    bool isValidSquare(string square);
 
     int characterQuantity(char c, string str);
 }

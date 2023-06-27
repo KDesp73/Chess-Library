@@ -9,13 +9,13 @@ include_directories(src/includes)
 # Add source files
 set(SOURCES
     src/main.cpp
-    src/chess_lib.h
     
     src/includes/board.h
     src/includes/structs.h
     src/includes/board_utils.h
     src/includes/pieces.h
     src/includes/notation.h
+    src/includes/movement.h
 
 
     src/Board/board_utils.cpp

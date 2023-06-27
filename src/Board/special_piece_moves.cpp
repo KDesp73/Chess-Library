@@ -1,5 +1,6 @@
 #include "board.h"
 #include "board_utils.h"
+#include "movement.h"
 
 #include <iostream>
 #include <limits>
@@ -7,7 +8,7 @@
 using namespace BoardUtils;
 
 
-string Board::promoteTo(){
+string Movement::promoteTo(){
     char promoteTo = '-';
     do {
         printf("Promote to (q, r, b, n): ");
@@ -24,7 +25,7 @@ string Board::promoteTo(){
     return "";
 }
 
-bool Board::promotePawn(Move move, Pawn *pawn, Board *board){
+bool Movement::promotePawn(Move move, Pawn *pawn, Board *board){
     if(
         move.promotion != Piece::BISHOP &&
         move.promotion != Piece::KNIGHT &&
@@ -49,12 +50,12 @@ bool Board::promotePawn(Move move, Pawn *pawn, Board *board){
 
     Piece *pieceToCapture = board->findPiece(move.to);
     if(pieceToCapture != NULL){
-        Board::removePieceFreely(move.to, board);
+        Movement::removePieceFreely(move.to, board);
     }
 
     Piece* promoted;
     string color = pawn->color;
-    Board::removePieceFreely(pawn->currentSquare, board);
+    Movement::removePieceFreely(pawn->currentSquare, board);
 
     int promoteTo = -1;
     char piece_char;
@@ -97,18 +98,18 @@ bool Board::promotePawn(Move move, Pawn *pawn, Board *board){
 
 
     if (pawn->color == "white"){
-        board->wp->pieces.push_back(promoted);
+        board->getPieces("white")->pieces.push_back(promoted);
         board->board[translateSquare(move.to).x][translateSquare(move.to).y] = toupper(piece_char);
     }
     else {
-        board->bp->pieces.push_back(promoted);
+        board->getPieces("black")->pieces.push_back(promoted);
         board->board[translateSquare(move.to).x][translateSquare(move.to).y] = piece_char;
     }
 
     return true;
 }
 
-bool Board::castleKing(string square, King *king, Board *board){
+bool Movement::castleKing(string square, King *king, Board *board){
     Coords fromCoords = translateSquare(king->currentSquare);
     Coords toCoords = translateSquare(square);
 
@@ -124,20 +125,20 @@ bool Board::castleKing(string square, King *king, Board *board){
     wantedRook->printPiece();
 
     // Castle
-    Board::moveFreely(Move{king->currentSquare, square, "-"}, board);
+    Movement::moveFreely(Move{king->currentSquare, square, "-"}, board);
     string targetRookSquare = translateSquare(Coords{toCoords.x, toCoords.y - direction});
-    Board::moveFreely(Move{wantedRook->currentSquare, targetRookSquare, "-"}, board);
+    Movement::moveFreely(Move{wantedRook->currentSquare, targetRookSquare, "-"}, board);
 
     return true;
 }
 
-bool Board::enpassantPawn(string square, Pawn *pawn, Board *board){
+bool Movement::enpassantPawn(string square, Pawn *pawn, Board *board){
     char toFile = square.at(0);
     int toRank = square.at(1) - 48;
 
     int direction = (pawn->color == Piece::WHITE) ? 1 : -1;    
 
-    Board::moveFreely(Move{pawn->currentSquare, square}, board);
+    Movement::moveFreely(Move{pawn->currentSquare, square}, board);
     string squareToRemove = string(1, toFile) + to_string(toRank - direction);
-    return Board::removePieceFreely(squareToRemove, board);
+    return Movement::removePieceFreely(squareToRemove, board);
 }

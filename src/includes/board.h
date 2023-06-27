@@ -25,14 +25,38 @@ class Board{
         
         bool isInCheckmate(King *king);
 		bool isInStalemate(King *king);
-        bool isThreeFoldRepetition();
-        bool isDrawDueToInsufficientMaterial();
-        bool isFiftyMoveRule();
         bool isProtected(Piece *piece);
         bool isProtected(string square, string color);
         bool isPinned(string to, Piece *piece);
         bool kingTouchesKing(string to, string color);
 
+        bool canMove(Move move, Board *board);
+        bool canAttack(Move move, Board *board);
+        bool canMove(string color, string square, Board *board);
+        bool canAttack(string color, string square, Board *board);
+        bool canKingCapturePiece(King *king, Move move, Board *board);
+        bool isValidSquare(string square);
+        int kingWantsToCastle(Move move);
+        
+        vector<string> getValidMoves(Piece *piece, Board *board);
+        bool movePiece(Move move, Board *board);
+        void moveFreely(Move move, Board *board);
+        bool removePiece(string square, Board *board);
+        bool removePieceFreely(string square, Board *board);
+
+        
+        bool promotePawn(Move move, Pawn *pawn, Board *board);
+        string promoteTo();
+        bool enpassantPawn(string square, Pawn *pawn, Board *board);
+        bool castleKing(string square, King *king, Board *board);
+
+        
+
+
+        bool isThreeFoldRepetition();
+        bool isDrawDueToInsufficientMaterial();
+        bool isFiftyMoveRule();
+        
         void resetMovesSinceCapture();
         Pieces* getPieces(string color);
         void setOutcome(string outcome);
@@ -66,16 +90,6 @@ class Board{
 
         static void copyBoard(char src[8][8], char dest[8][8]);
         static void copyMove(Move *src, Move *dest);
-        static vector<string> getValidMoves(Piece *piece, Board *board);
-        static bool movePiece(Move move, Board *board);
-        static void moveFreely(Move move, Board *board);
-        static bool removePiece(string square, Board *board);
-        static bool removePieceFreely(string square, Board *board);
-
-        static bool promotePawn(Move move, Pawn *pawn, Board *board);
-        static string promoteTo();
-        static bool enpassantPawn(string square, Pawn *pawn, Board *board);
-        static bool castleKing(string square, King *king, Board *board);
         
         
 

@@ -2,12 +2,14 @@
 
 #include "board.h"
 #include "board_utils.h"
+#include "movement.h"
 
 #include <regex>
 #include <vector>
 #include <iostream>
 
 using namespace BoardUtils;
+using namespace Movement;
 
 string Notation::moveToPGNMove(Move move, Board *board){
     bool addPieceChar = true;
@@ -25,7 +27,7 @@ string Notation::moveToPGNMove(Move move, Board *board){
 
     // Make the move to check if it's check or mate
     Board *temp_board = new Board(board->exportFEN());
-    Board::moveFreely(move, temp_board);
+    Movement::moveFreely(move, temp_board);
 
 
     if(piece->type == Piece::PAWN) addPieceChar = false;
@@ -35,10 +37,10 @@ string Notation::moveToPGNMove(Move move, Board *board){
     if(pieceToCaptureChar != ' ') isCapture = true;    
     if(dynamic_cast<Pawn *>(piece) != NULL && dynamic_cast<Pawn *>(piece)->canEnpassant(move.to, board->getMove1Before())) isCapture = true;
     
-    if(dynamic_cast<King *>(piece) != NULL && kingWantsToCastle(move) > 0) isCastles = true;
-    if(dynamic_cast<King *>(piece) != NULL && kingWantsToCastle(move) < 0) isCastlesLong = true;
+    if(dynamic_cast<King *>(piece) != NULL && Movement::kingWantsToCastle(move) > 0) isCastles = true;
+    if(dynamic_cast<King *>(piece) != NULL && Movement::kingWantsToCastle(move) < 0) isCastlesLong = true;
     
-    if(temp_board->isInCheckmate(dynamic_cast<King *>(temp_board->findPiece(Piece::KING, (piece->color == Piece::WHITE) ? Piece::BLACK : Piece::WHITE)))) isMate = true;
+    if(Movement::isInCheckmate(dynamic_cast<King *>(temp_board->findPiece(Piece::KING, (piece->color == Piece::WHITE) ? Piece::BLACK : Piece::WHITE)), temp_board)) isMate = true;
 
     
     // Reset the board before the move
@@ -52,15 +54,15 @@ string Notation::moveToPGNMove(Move move, Board *board){
         bool canMoveToSquare1 = false, canMoveToSquare2 = false;
         if(piece1 != NULL){
             firstPieceCoords = translateSquare(piece1->currentSquare);
-            canMoveToSquare1 = BoardUtils::canMove(Move{piece1->currentSquare, move.to}, temp_board);
-            Board::removePieceFreely(piece1->currentSquare, temp_board);
+            canMoveToSquare1 = Movement::canMove(Move{piece1->currentSquare, move.to}, temp_board);
+            Movement::removePieceFreely(piece1->currentSquare, temp_board);
         }
         
         Piece *piece2 = temp_board->findPiece(piece->type, piece->color);
         Coords secondPieceCoords;
         if(piece2 != NULL){
             secondPieceCoords = translateSquare(temp_board->findPiece(piece->type, piece->color)->currentSquare);
-            canMoveToSquare2 = BoardUtils::canMove(Move{piece2->currentSquare, move.to}, temp_board);
+            canMoveToSquare2 = Movement::canMove(Move{piece2->currentSquare, move.to}, temp_board);
         }
 
         int piece1Row = firstPieceCoords.x, piece1Col = firstPieceCoords.y;
@@ -232,7 +234,7 @@ Move Notation::algebraicNotationToMove(string algebraicNotation, int index, Boar
         return {};
     }
 
-    while(!BoardUtils::canMove(Move{piece->currentSquare, to_square}, &temp_board)){
+    while(!Movement::canMove(Move{piece->currentSquare, to_square}, &temp_board)){
         //Remove the piece
         temp_board.getPieces(color)->pieces.erase(std::remove(temp_board.getPieces(color)->pieces.begin(), temp_board.getPieces(color)->pieces.end(), piece), temp_board.getPieces(color)->pieces.end());
         piece = temp_board.findPiece(piece_type, color);
