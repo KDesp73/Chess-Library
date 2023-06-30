@@ -33,12 +33,12 @@ The `Board` class represents a chess board and provides methods for manipulating
 
 ### Methods
 
-- `isThreeFoldRepetition()`: Checks if the current board position has occurred three times.
+- `isThreeFoldRepetition()`: Checks if any board position has occurred three times.
 - `isDrawDueToInsufficientMaterial()`: Checks if the current board position leads to a draw due to insufficient material.
 - `isFiftyMoveRule()`: Checks if the current board position satisfies the fifty-move rule.
 - `resetMovesSinceCapture()`: Resets the count of moves since the last capture or pawn move.
 - `getPieces(color)`: Returns the pointer to the `Pieces` object for the specified color.
-- `setOutcome(outcome)`: Sets the outcome of the game.
+- `setOutcome(outcome)`: Sets the outcome of the game (1-0, 0-1, 1/2-1/2).
 - `getOutcome()`: Returns the outcome of the game.
 - `setKingsCastlingRights(king)`: Sets the castling rights for the specified king.
 - `increaseMovesSinceCapture()`: Increments the count of moves since the last capture or pawn move.
@@ -68,8 +68,8 @@ The `Board` class represents a chess board and provides methods for manipulating
 ### Constructors
 
 - `Board()`: Default constructor.
-- `Board(fen)`: Constructs a `Board` object using the specified FEN string.
-- `Board(board)`: Constructs a `Board` object using the specified 2D character array representing the board.
+- `Board(std::string fen)`: Constructs a `Board` object using the specified FEN string.
+- `Board(char board[8][8])`: Constructs a `Board` object using the specified 2D character array representing the board.
 
 ### Destructor
 
@@ -301,7 +301,7 @@ The `Move` struct represents a chess move.
 
 - `from`: The starting square of the move in algebraic notation (e.g., "e2").
 - `to`: The destination square of the move in algebraic notation (e.g., "e4").
-- `promotion`: Optional. Specifies the piece to which a pawn is promoted (e.g., "Q" for queen, "N" for knight, etc.).
+- `promotion`: Optional. Specifies the piece to which a pawn is promoted (e.g., Piece::QUEEN for queen, Piece::KNIGHT for knight, etc.).
 
 ---
 
