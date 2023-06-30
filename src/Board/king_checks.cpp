@@ -53,7 +53,7 @@ bool Movement::isInCheckmate(King *king, Board *board) {
         } else if (rookCol == kingCol) {
             int direction = (rookRow < rookCol) ? 1 : -1;
             for (int i = 1; i <= abs(rookRow - kingRow); i++) {
-                string squareToCheck = letters[rookCol + 1] + to_string(rookRow + i * direction + 1);
+                string squareToCheck = letters[rookCol] + to_string(rookRow + i * direction + 1);
                 if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }
@@ -122,7 +122,7 @@ bool Movement::isInCheckmate(King *king, Board *board) {
         } else if (queenCol == kingCol) {
             int direction = (rowDiff < 0) ? 1 : -1;
             for (int i = 1; i < abs(queenRow - kingRow); i++) {
-                string squareToCheck = letters[queenCol - 1] + to_string(queenRow - 1 + i*direction);
+                string squareToCheck = letters[queenCol] + to_string(queenRow - 1 + i*direction);
                 if (Movement::canMove(king->color, squareToCheck, board))
                     return false;
             }

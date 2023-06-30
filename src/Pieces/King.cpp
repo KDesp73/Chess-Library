@@ -93,7 +93,7 @@ vector<Piece*> King::isInCheck(string to, char board[][8]) {
 
     if (this->color == "white") {
         for (Piece* p : b->getPieces(Piece::BLACK)->pieces) {
-            //if(p->type == "King") continue;
+            if(p->type == "King") continue;
 
             if(p->type == Piece::PAWN){
                 if (dynamic_cast<Pawn *>(p)->attacksSquare(to, board)) {
@@ -108,7 +108,7 @@ vector<Piece*> King::isInCheck(string to, char board[][8]) {
         }
     } else {
         for (Piece* p : b->getPieces(Piece::WHITE)->pieces) {
-            //if(p->type == "King") continue;
+            if(p->type == "King") continue;
 
             if(p->type == Piece::PAWN){
                 if (dynamic_cast<Pawn *>(p)->attacksSquare(to, board)) {
