@@ -8,8 +8,6 @@ include_directories(src/includes)
 
 # Add source files
 set(SOURCES
-    src/main.cpp
-    
     src/includes/board.h
     src/includes/structs.h
     src/includes/board_utils.h
@@ -39,6 +37,6 @@ set(SOURCES
 )
 
 
-add_executable(Chess ${SOURCES})
-# add_library(Chess ${SOURCES})
+# add_executable(Chess ${SOURCES})
+add_library(ChessLibrary ${SOURCES})
 
