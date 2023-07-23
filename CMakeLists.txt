@@ -3,19 +3,12 @@ cmake_minimum_required(VERSION 3.16)
 project(ChessLibrary)
 
 set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include_directories(src/includes)
+include_directories(include)
 
 # Add source files
 set(SOURCES
-    src/includes/board.h
-    src/includes/structs.h
-    src/includes/board_utils.h
-    src/includes/pieces.h
-    src/includes/notation.h
-    src/includes/movement.h
-
-
     src/Board/board_utils.cpp
     src/Board/Board.cpp
     src/Board/special_piece_moves.cpp
@@ -36,7 +29,17 @@ set(SOURCES
 
 )
 
+set(HEADERS
+    include/board.h
+    include/structs.h
+    include/board_utils.h
+    include/pieces.h
+    include/notation.h
+    include/movement.h
+
+    chess_lib.h
+)
 
 # add_executable(Chess ${SOURCES})
-add_library(ChessLibrary ${SOURCES})
+add_library(ChessLibrary ${SOURCES} ${HEADERS})
 
