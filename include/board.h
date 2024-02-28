@@ -64,7 +64,17 @@ class Board{
         
 
         ~Board(){}
-        Board(){};
+        Board(){
+			string fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq";
+            importFEN(fen);
+            wp->loadPieces(board);
+            bp->loadPieces(board);
+
+            setKingsCastlingRights(dynamic_cast<King *>(findPiece(Piece::KING, Piece::WHITE)));
+            setKingsCastlingRights(dynamic_cast<King *>(findPiece(Piece::KING, Piece::BLACK)));
+
+            past_board_states.insert({fen, 1});
+		};
         Board(string fen){
             importFEN(fen);
             wp->loadPieces(board);
